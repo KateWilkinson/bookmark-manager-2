@@ -43,10 +43,17 @@ class BManager < Sinatra::Base
 
   post '/users' do
     user = User.create(email: params[:email],
-                password: params[:password])
+                       password: params[:password])
     session[:user_id] = user.id
     redirect '/'
   end
 
+  helpers do
+
+    def current_user
+      @id ||= session[:user_id]
+      User.first(id: @id)
+    end
+  end
   run! if app_file == $0
 end
