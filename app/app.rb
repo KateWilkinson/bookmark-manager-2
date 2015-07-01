@@ -7,8 +7,6 @@ class BManager < Sinatra::Base
   set :views, proc { File.join(root, '..', 'view') }
 
   get '/' do
-    user = User.first(session[:user_id])
-    @user_email = user.email
     erb :index
   end
 
