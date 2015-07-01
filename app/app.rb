@@ -18,7 +18,7 @@ class BManager < Sinatra::Base
   end
 
   post '/links' do
-    link = Link.new(url: params[:url], title: params[:title])
+    link = Link.new(url: params[:url], title: params[:title]) unless params[:url] == "" || params[:title] == ""
     params[:tag].split.each do |input|
       link.tags << Tag.create(name: input)
     end
