@@ -1,8 +1,10 @@
 require 'sinatra/base'
+require 'sinatra/flash'
 
 class BManager < Sinatra::Base
   enable :sessions
   set :session_secret, 'super secret'
+  register Sinatra::Flash
 
   set :views, proc { File.join(root, '..', 'view') }
 
@@ -48,6 +50,7 @@ class BManager < Sinatra::Base
       session[:user_id] = user.id
       redirect '/'
     else
+      flash.now[:notice] = "Sorry, your passwords do not match"
       erb :'users/new_user'
     end
   end
