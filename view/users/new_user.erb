@@ -1,9 +1,9 @@
 <form action='/users' method='POST'>
 
-  <input type="text" name="email">
+  <input type="text" name="email" value='<%= @user.email %>'>
   <input type="password" name="password">
   <input type="password" name="password_confirmation">
 
   <input type="submit" value="Sign up">
-  
+
 </form>
