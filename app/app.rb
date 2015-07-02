@@ -5,6 +5,7 @@ class BManager < Sinatra::Base
   enable :sessions
   set :session_secret, 'super secret'
   register Sinatra::Flash
+  use Rack::MethodOverride
 
   set :views, proc { File.join(root, '..', 'view') }
 
@@ -53,6 +54,26 @@ class BManager < Sinatra::Base
       flash.now[:errors] = @user.errors.full_messages
       erb :'users/new_user'
     end
+  end
+
+  get '/sessions/new' do
+    erb :'sessions/new'
+  end
+
+  post '/sessions' do
+    user = User.authenticate(email: params[:email], password: params[:password])
+    if user
+      session[:user_id] = user.id
+      redirect to('/links')
+    else
+      flash[:errors] = ['The email or password is incorrect']
+      erb :'sessions/new'
+    end
+  end
+
+  delete '/sessions' do
+    session.clear
+    erb :'sessions/goodbye'
   end
 
   helpers do
